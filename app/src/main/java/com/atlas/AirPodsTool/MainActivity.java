@@ -12,9 +12,11 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import com.atlas.AirPodsTool.MyView.CircleProgress;
 import com.atlas.AirPodsTool.MyView.StyleToast;
@@ -76,6 +78,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         colorAnim.setEvaluator(new ArgbEvaluator());
         colorAnim.setTarget(tv_message);
         colorAnim.start();
+
+        ToggleButton switch_airpods = (ToggleButton) findViewById(R.id.switch_airpods);
+        switch_airpods.setChecked(MediaReceiver.proxy);
+        switch_airpods.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                MediaReceiver.proxy = isChecked;
+            }
+        });
     }
 
     private void initAudio() {

@@ -2,11 +2,40 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/root"
     android:gravity="center"
     android:orientation="vertical">
+
+
+    <ToggleButton
+        android:id="@+id/switch_airpods"
+        style="@style/myButton"
+        android:layout_width="match_parent"
+        android:checked="true"
+        android:textColor="#fff"
+        android:textOff="双击AirPods 播放/暂停"
+        android:textOn="双击 AirPods 下一首"/>
+
+    <Button
+        android:id="@+id/btn_re_engross_audio"
+        style="@style/myButton"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:contentDescription="btn_re_engross_audio"
+        android:text="重新初始化"
+        android:textColor="#fff"/>
+
+    <View
+        android:id="@+id/horizontal_bone"
+        android:layout_width="250dp"
+        android:layout_height="20dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <requestFocus/>
+    </View>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,23 +77,5 @@
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/horizontal_bone"
-        android:layout_width="200dp"
-        android:layout_height="10dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
 
-        <requestFocus/>
-    </View>
-
-    <com.atlas.AirPodsTool.MyView.ShadowButton
-        android:id="@+id/btn_re_engross_audio"
-        style="@style/myButton"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:contentDescription="btn_re_engross_audio"
-        android:text="失效请尝试重新初始化\n(￣▽￣)"
-        android:textColor="?theme_color"
-        app:delaytime="120"/>
 </LinearLayout>

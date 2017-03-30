@@ -13,6 +13,7 @@ import static android.view.KeyEvent.KEYCODE_MEDIA_PLAY;
 
 public class MediaReceiver extends BroadcastReceiver {
     private static final String TAG = "MediaReceiver";
+    public static boolean proxy = true;
 
     private AudioControl mAudioControl;
 
@@ -30,12 +31,12 @@ public class MediaReceiver extends BroadcastReceiver {
             mAudioControl = new AudioControl(context);
         KeyEvent keyEvent
                 = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
-        Log.d(TAG, "onReceive: " + keyEvent);
         int keyCode = keyEvent.getKeyCode();
+        Log.d(TAG, "onReceive: " + keyEvent.keyCodeToString(keyCode) + " proxy: " + proxy);
         if (keyEvent.getAction() == ACTION_UP) {
             // 播放和暂停-->下一首
-            if (keyCode == KEYCODE_MEDIA_PLAY
-                    || keyCode == KEYCODE_MEDIA_PAUSE) {
+            if (proxy && (keyCode == KEYCODE_MEDIA_PLAY
+                    || keyCode == KEYCODE_MEDIA_PAUSE)) {
                 keyCode = KEYCODE_MEDIA_NEXT;
             }
             mAudioControl.mediaControl(keyCode);
