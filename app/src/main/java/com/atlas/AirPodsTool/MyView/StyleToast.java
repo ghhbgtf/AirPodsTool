@@ -1,4 +1,4 @@
-package com.atlas.airtool;
+package com.atlas.AirPodsTool.MyView;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,6 +7,8 @@ import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.atlas.AirPodsTool.R;
 
 /**
  * Created by Atlas on 16/1/12.

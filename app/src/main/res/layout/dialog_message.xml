@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:padding="10dp">
 
-    <com.atlas.airtool.CircleProgress
+    <com.atlas.AirPodsTool.MyView.CircleProgress
         android:id="@+id/progressBar"
         android:layout_width="60dp"
         android:layout_height="60dp"

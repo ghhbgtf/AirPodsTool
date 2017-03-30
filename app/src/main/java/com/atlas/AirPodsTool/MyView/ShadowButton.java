@@ -1,4 +1,4 @@
-package com.atlas.airtool;
+package com.atlas.AirPodsTool.MyView;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -10,6 +10,8 @@ import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.Button;
+
+import com.atlas.AirPodsTool.R;
 
 /**
  * Created by Atlas on 2016/12/2.

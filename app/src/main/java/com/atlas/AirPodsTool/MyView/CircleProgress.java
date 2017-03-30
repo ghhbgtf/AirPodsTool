@@ -1,4 +1,4 @@
-package com.atlas.airtool;
+package com.atlas.AirPodsTool.MyView;
 
 import android.animation.TimeInterpolator;
 import android.content.Context;
@@ -9,6 +9,8 @@ import android.graphics.Point;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+
+import com.atlas.AirPodsTool.R;
 
 public class CircleProgress extends View {
 
@@ -147,20 +149,6 @@ public class CircleProgress extends View {
 
     public void stopAnim() {
         mStartAnim = false;
-    }
-
-    public void setInterpolator(TimeInterpolator interpolator) {
-        mInterpolator = interpolator;
-    }
-
-    public void setDuration(long duration) {
-        mDuration = duration;
-    }
-
-    public void setRadius(float factor) {
-        stopAnim();
-        calPoints(factor);
-        startAnim();
     }
 
     static class ArcPoint {

@@ -1,4 +1,4 @@
-package com.atlas.airtool;
+package com.atlas.AirPodsTool;
 
 import org.junit.Test;
 

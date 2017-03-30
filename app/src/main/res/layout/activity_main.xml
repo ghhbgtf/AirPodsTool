@@ -14,7 +14,7 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <com.atlas.airtool.ShadowButton
+        <com.atlas.AirPodsTool.MyView.ShadowButton
             android:id="@+id/btn_previous"
             style="@style/myButton"
             android:contentDescription="btn_previous"
@@ -22,7 +22,7 @@
             android:textColor="?theme_color"
             app:delaytime="60"/>
 
-        <com.atlas.airtool.ShadowButton
+        <com.atlas.AirPodsTool.MyView.ShadowButton
             android:id="@+id/btn_play"
             style="@style/myButton"
             android:contentDescription="btn_play"
@@ -30,7 +30,7 @@
             android:textColor="?theme_color"
             app:delaytime="60"/>
 
-        <com.atlas.airtool.ShadowButton
+        <com.atlas.AirPodsTool.MyView.ShadowButton
             android:id="@+id/btn_pause"
             style="@style/myButton"
             android:contentDescription="btn_pause"
@@ -38,7 +38,7 @@
             android:textColor="?theme_color"
             app:delaytime="60"/>
 
-        <com.atlas.airtool.ShadowButton
+        <com.atlas.AirPodsTool.MyView.ShadowButton
             android:id="@+id/btn_next"
             style="@style/myButton"
             android:contentDescription="btn_next"
@@ -58,7 +58,7 @@
         <requestFocus/>
     </View>
 
-    <com.atlas.airtool.ShadowButton
+    <com.atlas.AirPodsTool.MyView.ShadowButton
         android:id="@+id/btn_re_engross_audio"
         style="@style/myButton"
         android:layout_width="match_parent"

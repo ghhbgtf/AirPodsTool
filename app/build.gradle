@@ -4,7 +4,7 @@ android {
     compileSdkVersion 24
     buildToolsVersion "25.0.0"
     defaultConfig {
-        applicationId "com.atlas.airtool"
+        applicationId "com.atlas.AirPodsTool"
         minSdkVersion 19
         targetSdkVersion 24
         versionCode 1

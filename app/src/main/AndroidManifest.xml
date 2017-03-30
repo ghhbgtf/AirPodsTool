@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.atlas.airtool">
+          package="com.atlas.AirPodsTool">
 
     <application
         android:allowBackup="true"
@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.atlas.AirPodsTool.MainActivity"
             android:label="@string/icon_name"
             android:theme="@style/dialog">
             <intent-filter>
@@ -20,7 +20,7 @@
         </activity>
 
         <receiver
-            android:name=".MediaReceiver"
+            android:name="com.atlas.AirPodsTool.MediaReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

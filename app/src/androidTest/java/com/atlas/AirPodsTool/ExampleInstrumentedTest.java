@@ -1,4 +1,4 @@
-package com.atlas.airtool;
+package com.atlas.AirPodsTool;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.atlas.airtool", appContext.getPackageName());
+        assertEquals("com.atlas.AirPodsTool", appContext.getPackageName());
     }
 }
