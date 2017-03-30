@@ -10,7 +10,7 @@
 
 
     <ToggleButton
-        android:id="@+id/switch_airpods"
+        android:id="@+id/togglebutton_airpods"
         style="@style/myButton"
         android:layout_width="match_parent"
         android:checked="true"
@@ -18,14 +18,15 @@
         android:textOff="双击AirPods 播放/暂停"
         android:textOn="双击 AirPods 下一首"/>
 
-    <Button
+    <com.atlas.AirPodsTool.MyView.ShadowButton
         android:id="@+id/btn_re_engross_audio"
         style="@style/myButton"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:contentDescription="btn_re_engross_audio"
         android:text="重新初始化"
-        android:textColor="#fff"/>
+        android:textColor="#fff"
+        app:delaytime="120"/>
 
     <View
         android:id="@+id/horizontal_bone"
@@ -43,37 +44,27 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <com.atlas.AirPodsTool.MyView.ShadowButton
+        <Button
             android:id="@+id/btn_previous"
             style="@style/myButton"
             android:contentDescription="btn_previous"
             android:text="PREV"
-            android:textColor="?theme_color"
-            app:delaytime="60"/>
+            android:textColor="#fff"/>
 
-        <com.atlas.AirPodsTool.MyView.ShadowButton
-            android:id="@+id/btn_play"
+        <ToggleButton
+            android:id="@+id/togglebutton_play_pause"
             style="@style/myButton"
-            android:contentDescription="btn_play"
-            android:text="PLAY"
-            android:textColor="?theme_color"
-            app:delaytime="60"/>
+            android:checked="true"
+            android:textColor="#fff"
+            android:textOff="PLAY"
+            android:textOn="PAUSE"/>
 
-        <com.atlas.AirPodsTool.MyView.ShadowButton
-            android:id="@+id/btn_pause"
-            style="@style/myButton"
-            android:contentDescription="btn_pause"
-            android:text="PAUS"
-            android:textColor="?theme_color"
-            app:delaytime="60"/>
-
-        <com.atlas.AirPodsTool.MyView.ShadowButton
+        <Button
             android:id="@+id/btn_next"
             style="@style/myButton"
             android:contentDescription="btn_next"
             android:text="NEXT"
-            android:textColor="?theme_color"
-            app:delaytime="60"/>
+            android:textColor="#fff"/>
 
     </LinearLayout>
 

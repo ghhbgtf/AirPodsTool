@@ -26,7 +26,7 @@ import static android.view.KeyEvent.KEYCODE_MEDIA_PAUSE;
 import static android.view.KeyEvent.KEYCODE_MEDIA_PLAY;
 import static android.view.KeyEvent.KEYCODE_MEDIA_PREVIOUS;
 
-public class MainActivity extends Activity implements View.OnClickListener {
+public class MainActivity extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
 
     private static final String TAG = "MainActivity";
 
@@ -57,8 +57,6 @@ public class MainActivity extends Activity implements View.OnClickListener {
 
     private void initViews() {
         findViewById(R.id.btn_previous).setOnClickListener(this);
-        findViewById(R.id.btn_play).setOnClickListener(this);
-        findViewById(R.id.btn_pause).setOnClickListener(this);
         findViewById(R.id.btn_next).setOnClickListener(this);
         findViewById(R.id.btn_re_engross_audio).setOnClickListener(this);
 
@@ -79,15 +77,15 @@ public class MainActivity extends Activity implements View.OnClickListener {
         colorAnim.setTarget(tv_message);
         colorAnim.start();
 
-        ToggleButton switch_airpods = (ToggleButton) findViewById(R.id.switch_airpods);
-        switch_airpods.setChecked(MediaReceiver.proxy);
-        switch_airpods.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                MediaReceiver.proxy = isChecked;
-            }
-        });
+        ToggleButton toggleAirPods = (ToggleButton) findViewById(R.id.togglebutton_airpods);
+        toggleAirPods.setChecked(MediaReceiver.proxy);
+        toggleAirPods.setOnCheckedChangeListener(this);
+
+        ToggleButton togglePlayPause = (ToggleButton) findViewById(R.id.togglebutton_play_pause);
+        togglePlayPause.setOnCheckedChangeListener(this);
     }
+
+    private boolean play_pause = true;
 
     private void initAudio() {
         mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
@@ -124,15 +122,13 @@ public class MainActivity extends Activity implements View.OnClickListener {
             case R.id.btn_re_engross_audio:
                 releaseEngross();
                 return;
-            //音乐控制四骑士
+            //音乐控制
             case R.id.btn_previous:
                 code = KEYCODE_MEDIA_PREVIOUS;
                 break;
-            case R.id.btn_play:
-                code = KEYCODE_MEDIA_PLAY;
-                break;
-            case R.id.btn_pause:
-                code = KEYCODE_MEDIA_PAUSE;
+            case R.id.togglebutton_play_pause:
+                code = play_pause ?
+                        KEYCODE_MEDIA_PLAY : KEYCODE_MEDIA_PAUSE;
                 break;
             case R.id.btn_next:
                 code = KEYCODE_MEDIA_NEXT;
@@ -147,6 +143,19 @@ public class MainActivity extends Activity implements View.OnClickListener {
             circleProgress.reset();
             circleProgress.startAnim();
             popupWindow.showAtLocation(root, Gravity.CENTER_HORIZONTAL, 0, 0);
+        }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()) {
+            case R.id.togglebutton_airpods:
+                MediaReceiver.proxy = isChecked;
+                break;
+            case R.id.togglebutton_play_pause:
+                play_pause = isChecked;
+                onClick(buttonView);
+                break;
         }
     }
 
