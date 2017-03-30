@@ -1,54 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/root"
     android:gravity="center"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="horizontal">
 
-        <Button
+        <com.atlas.airtool.ShadowButton
             android:id="@+id/btn_previous"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/myButton"
             android:contentDescription="btn_previous"
-            android:text="PREVIOUS"/>
+            android:text="PREV"
+            android:textColor="?theme_color"
+            app:delaytime="60"/>
 
-        <Button
+        <com.atlas.airtool.ShadowButton
             android:id="@+id/btn_play"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/myButton"
             android:contentDescription="btn_play"
-            android:text="PLAY"/>
+            android:text="PLAY"
+            android:textColor="?theme_color"
+            app:delaytime="60"/>
 
-        <Button
+        <com.atlas.airtool.ShadowButton
             android:id="@+id/btn_pause"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/myButton"
             android:contentDescription="btn_pause"
-            android:text="PAUSE"/>
+            android:text="PAUS"
+            android:textColor="?theme_color"
+            app:delaytime="60"/>
 
-        <Button
+        <com.atlas.airtool.ShadowButton
             android:id="@+id/btn_next"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
+            style="@style/myButton"
             android:contentDescription="btn_next"
-            android:text="NEXT"/>
+            android:text="NEXT"
+            android:textColor="?theme_color"
+            app:delaytime="60"/>
 
     </LinearLayout>
 
-    <Button
+    <View
+        android:id="@+id/horizontal_bone"
+        android:layout_width="200dp"
+        android:layout_height="10dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <requestFocus/>
+    </View>
+
+    <com.atlas.airtool.ShadowButton
         android:id="@+id/btn_re_engross_audio"
+        style="@style/myButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:contentDescription="btn_re_engross_audio"
-        android:text="失效请尝试重新初始化(￣▽￣)"/>
+        android:text="失效请尝试重新初始化\n(￣▽￣)"
+        android:textColor="?theme_color"
+        app:delaytime="120"/>
 </LinearLayout>

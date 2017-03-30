@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!--solid为填充颜色，如果不写，将是默认的黑色，我这里设置成白色-->
+    <solid android:color="@color/colorTransparentBACK" />
+    <!-- stroke为边框,属性为宽度和颜色-->
+    <stroke
+        android:width="1dp"
+        android:color="@android:color/black" />
+    <corners android:radius="@dimen/corner_radius" />
+    <padding
+        android:bottom="8dp"
+        android:left="8dp"
+        android:right="8dp"
+        android:top="8dp" />
+</shape>

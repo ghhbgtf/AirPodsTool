@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="duration">600</integer>
+    <declare-styleable name="CircleProgress">
+        <attr name="theme_color" format="reference|color" />
+
+        <attr name="color1" format="reference|color" />
+        <attr name="color2" format="reference|color" />
+        <attr name="color3" format="reference|color" />
+
+    </declare-styleable>
+
+    <declare-styleable name="ShadowButton">
+        <attr name="delaytime" format="integer"/>
+    </declare-styleable>
+</resources>
