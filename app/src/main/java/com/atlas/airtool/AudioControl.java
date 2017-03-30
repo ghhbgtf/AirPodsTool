@@ -11,8 +11,7 @@ import static android.view.KeyEvent.keyCodeToString;
 
 public class AudioControl {
     private static final String TAG = "AudioControl";
-    public static final String SEND_BROADCAST_ONCE = "send_broadcast_once";
-    public static final String SEND_BY_AUDIOCONTROL = "send_by_audio_control";
+    public static final String SEND_BY_AUDIO_CONTROL = "send_by_audio_control";
 
     private Context mContext;
     private Intent mIntent;
@@ -21,11 +20,7 @@ public class AudioControl {
         mContext = context;
     }
 
-//    public void mediaControl(int code) {
-//        mediaControl(code, false);
-//    }
-
-    public void mediaControl(int code, boolean sendBroadcastOnce) {
+    public void mediaControl(int code) {
         Log.d(TAG, "mediaControl: " + keyCodeToString(code));
         mIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         KeyEvent value = new KeyEvent(
@@ -34,8 +29,7 @@ public class AudioControl {
                 ACTION_UP, code,
                 0, 0, -1, 0, 0x0, 0x101);
         mIntent.putExtra(Intent.EXTRA_KEY_EVENT, value);
-        mIntent.putExtra(SEND_BROADCAST_ONCE, sendBroadcastOnce);
-        mIntent.putExtra(SEND_BY_AUDIOCONTROL, true);
+        mIntent.putExtra(SEND_BY_AUDIO_CONTROL, true);
         mContext.sendBroadcast(mIntent);
     }
 }

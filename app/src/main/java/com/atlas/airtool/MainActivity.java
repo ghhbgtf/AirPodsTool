@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         initViews();
         initAudio();
-        MediaReceiver.isAirToolRunning = true;
     }
 
     private void initViews() {
@@ -92,26 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 code = KEYCODE_MEDIA_NEXT;
                 break;
         }
-        mAudioControl.mediaControl(code, true);
-    }
-
-//    @Override
-//    public boolean onKeyDown(int keyCode, KeyEvent e) {
-//        Log.d(TAG, "onKeyDown: " + keyCodeToString(keyCode));
-//        if (keyCode == KeyEvent.KEYCODE_BACK) {
-//            finish();
-//            return true;
-//        }
-//        if (keyCode == 127 || keyCode == 126) {
-//            mAudioControl.mediaControl(KEYCODE_MEDIA_NEXT);
-//        }
-//        return true;
-//    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        MediaReceiver.isAirToolRunning = false;
+        mAudioControl.mediaControl(code);
     }
 
     private class AirPodHandler extends Handler {
