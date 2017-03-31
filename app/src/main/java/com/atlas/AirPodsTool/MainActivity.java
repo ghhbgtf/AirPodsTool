@@ -12,6 +12,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -45,6 +46,9 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
     private ComponentName mComponent;
     private AudioControl mAudioControl;
     private Handler mHandler = new AirPodHandler();
+
+    private boolean play_pause = true;
+    private boolean released = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,15 +89,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
         togglePlayPause.setOnCheckedChangeListener(this);
     }
 
-    private boolean play_pause = true;
-
     private void initAudio() {
         mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         mComponent = new ComponentName(this, MediaReceiver.class);
         mAudioControl = new AudioControl(this);
     }
-
-    private boolean released = false;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -115,9 +115,22 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
     }
 
     @Override
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        switch (buttonView.getId()) {
+            case R.id.togglebutton_airpods:
+                MediaReceiver.proxy = isChecked;
+                break;
+            case R.id.togglebutton_play_pause:
+                play_pause = isChecked;
+                break;
+        }
+        onClick(buttonView);
+    }
+
+    @Override
     public void onClick(View v) {
-        Log.d(TAG, "onClick: " + v.getContentDescription());
-        int code = KEYCODE_MEDIA_NEXT;
+        Log.d(TAG, "onClick: " + ((Button) v).getText());
+        int code;
         switch (v.getId()) {
             case R.id.btn_re_engross_audio:
                 releaseEngross();
@@ -133,6 +146,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
             case R.id.btn_next:
                 code = KEYCODE_MEDIA_NEXT;
                 break;
+            default:
+                return;
         }
         mAudioControl.mediaControl(code);
     }
@@ -143,19 +158,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
             circleProgress.reset();
             circleProgress.startAnim();
             popupWindow.showAtLocation(root, Gravity.CENTER_HORIZONTAL, 0, 0);
-        }
-    }
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()) {
-            case R.id.togglebutton_airpods:
-                MediaReceiver.proxy = isChecked;
-                break;
-            case R.id.togglebutton_play_pause:
-                play_pause = isChecked;
-                onClick(buttonView);
-                break;
         }
     }
 

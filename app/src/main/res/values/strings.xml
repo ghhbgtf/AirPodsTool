@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">AirTool</string>
     <string name="icon_name">AirPodsTool</string>
+    <string name="airpods_play_pause">双击 AirPods 播放/暂停</string>
+    <string name="airpods_next">双击 AirPods 下一首</string>
+    <string name="reinit_audio_manager">重新初始化</string>
+    <string name="media_prev">PREV</string>
+    <string name="media_play">PLAY</string>
+    <string name="media_pause">PAUSE</string>
+    <string name="media_next">NEXT</string>
 </resources>

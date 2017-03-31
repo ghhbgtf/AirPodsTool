@@ -8,6 +8,14 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <com.atlas.AirPodsTool.MyView.ShadowButton
+        android:id="@+id/btn_re_engross_audio"
+        style="@style/myButton"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:text="@string/reinit_audio_manager"
+        android:textColor="#fff"
+        app:delaytime="80"/>
 
     <ToggleButton
         android:id="@+id/togglebutton_airpods"
@@ -15,18 +23,8 @@
         android:layout_width="match_parent"
         android:checked="true"
         android:textColor="#fff"
-        android:textOff="双击AirPods 播放/暂停"
-        android:textOn="双击 AirPods 下一首"/>
-
-    <com.atlas.AirPodsTool.MyView.ShadowButton
-        android:id="@+id/btn_re_engross_audio"
-        style="@style/myButton"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:contentDescription="btn_re_engross_audio"
-        android:text="重新初始化"
-        android:textColor="#fff"
-        app:delaytime="120"/>
+        android:textOff="@string/airpods_play_pause"
+        android:textOn="@string/airpods_next"/>
 
     <View
         android:id="@+id/horizontal_bone"
@@ -47,8 +45,7 @@
         <Button
             android:id="@+id/btn_previous"
             style="@style/myButton"
-            android:contentDescription="btn_previous"
-            android:text="PREV"
+            android:text="@string/media_prev"
             android:textColor="#fff"/>
 
         <ToggleButton
@@ -56,14 +53,13 @@
             style="@style/myButton"
             android:checked="true"
             android:textColor="#fff"
-            android:textOff="PLAY"
-            android:textOn="PAUSE"/>
+            android:textOff="@string/media_play"
+            android:textOn="@string/media_pause"/>
 
         <Button
             android:id="@+id/btn_next"
             style="@style/myButton"
-            android:contentDescription="btn_next"
-            android:text="NEXT"
+            android:text="@string/media_next"
             android:textColor="#fff"/>
 
     </LinearLayout>

@@ -1,5 +1,6 @@
 package com.atlas.AirPodsTool.MyView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -17,6 +18,7 @@ import com.atlas.AirPodsTool.R;
  * Created by Atlas on 2016/12/2.
  */
 
+@SuppressLint("AppCompatCustomView")
 public class ShadowButton extends Button {
     private static final String TAG = "ShadowButton";
 
@@ -57,7 +59,7 @@ public class ShadowButton extends Button {
             if (mViewWidth > 0) {
                 mPaint = getPaint();
                 linearGradient = new LinearGradient(0, 0, mViewWidth, 0,
-                        new int[]{0x33ffffff, 0xffffffff, 0x33ffffff}, null, Shader.TileMode.CLAMP);
+                        new int[]{0xff000000, 0xffffffff, 0xff000000}, null, Shader.TileMode.MIRROR);
                 mPaint.setShader(linearGradient);
                 mMatrix = new Matrix();
             }
@@ -68,13 +70,12 @@ public class ShadowButton extends Button {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         if (mMatrix != null) {
-            mTranslate += mViewWidth / 10;
+            mTranslate += mViewWidth / 30;
             if (mTranslate > mViewWidth * 2) {
                 mTranslate = -mViewWidth;
             }
             mMatrix.setTranslate(mTranslate, 0);
             linearGradient.setLocalMatrix(mMatrix);
-//            postInvalidate();
             postInvalidateDelayed(mDelayTime);
         }
     }
