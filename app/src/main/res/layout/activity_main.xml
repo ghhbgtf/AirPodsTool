@@ -42,27 +42,24 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <Button
+        <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/btn_previous"
             style="@style/myButton"
-            android:text="@string/media_prev"
-            android:textColor="#fff"/>
+            android:padding="4dp"
+            app:srcCompat="@drawable/animator_vector_rewind"/>
 
-        <ToggleButton
-            android:id="@+id/togglebutton_play_pause"
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/btn_play_pause"
             style="@style/myButton"
             android:checked="true"
-            android:textColor="#fff"
-            android:textOff="@string/media_play"
-            android:textOn="@string/media_pause"/>
+            android:padding="4dp"
+            app:srcCompat="@drawable/ic_play_arrow_white_24dp"/>
 
-        <Button
+        <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/btn_next"
             style="@style/myButton"
-            android:text="@string/media_next"
-            android:textColor="#fff"/>
-
+            android:padding="4dp"
+            app:srcCompat="@drawable/animator_vector_forward"/>
     </LinearLayout>
-
 
 </LinearLayout>

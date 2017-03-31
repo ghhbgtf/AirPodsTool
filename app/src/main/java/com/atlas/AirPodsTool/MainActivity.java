@@ -5,6 +5,8 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,8 +14,8 @@ import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -49,6 +51,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
 
     private boolean play_pause = true;
     private boolean released = false;
+    private ImageButton mBtnPlayPause;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +63,24 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
     }
 
     private void initViews() {
-        findViewById(R.id.btn_previous).setOnClickListener(this);
-        findViewById(R.id.btn_next).setOnClickListener(this);
+
+        ImageButton btnPrev = (ImageButton) findViewById(R.id.btn_previous);
+        btnPrev.setOnClickListener(this);
+        Drawable drawablePrev = btnPrev.getDrawable();
+        if (drawablePrev instanceof Animatable) {
+            ((Animatable) drawablePrev).start();
+        }
+
+        mBtnPlayPause = (ImageButton) findViewById(R.id.btn_play_pause);
+        mBtnPlayPause.setOnClickListener(this);
+
+        ImageButton btnNext = (ImageButton) findViewById(R.id.btn_next);
+        btnNext.setOnClickListener(this);
+        Drawable drawableNext = btnNext.getDrawable();
+        if (drawableNext instanceof Animatable) {
+            ((Animatable) drawableNext).start();
+        }
+
         findViewById(R.id.btn_re_engross_audio).setOnClickListener(this);
 
         styleToast = new StyleToast(this);
@@ -85,8 +104,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
         toggleAirPods.setChecked(MediaReceiver.proxy);
         toggleAirPods.setOnCheckedChangeListener(this);
 
-        ToggleButton togglePlayPause = (ToggleButton) findViewById(R.id.togglebutton_play_pause);
-        togglePlayPause.setOnCheckedChangeListener(this);
     }
 
     private void initAudio() {
@@ -120,16 +137,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
             case R.id.togglebutton_airpods:
                 MediaReceiver.proxy = isChecked;
                 break;
-            case R.id.togglebutton_play_pause:
-                play_pause = isChecked;
-                break;
         }
         onClick(buttonView);
     }
 
     @Override
     public void onClick(View v) {
-        Log.d(TAG, "onClick: " + ((Button) v).getText());
+        Log.d(TAG, "onClick: " + v.getId());
         int code;
         switch (v.getId()) {
             case R.id.btn_re_engross_audio:
@@ -139,9 +153,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
             case R.id.btn_previous:
                 code = KEYCODE_MEDIA_PREVIOUS;
                 break;
-            case R.id.togglebutton_play_pause:
+            case R.id.btn_play_pause:
                 code = play_pause ?
                         KEYCODE_MEDIA_PLAY : KEYCODE_MEDIA_PAUSE;
+                mBtnPlayPause.setImageResource(
+                        play_pause ? R.drawable.ic_pause_white_24dp
+                                : R.drawable.ic_play_arrow_white_24dp);
+                play_pause = !play_pause;
                 break;
             case R.id.btn_next:
                 code = KEYCODE_MEDIA_NEXT;

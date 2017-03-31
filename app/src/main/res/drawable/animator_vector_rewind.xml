@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_fast_rewind_white_24dp">
+    <target
+        android:animation="@animator/animator_media_rewind_left"
+        android:name="left">
+    </target>
+    <target
+        android:animation="@animator/animator_media_rewind_right"
+        android:name="right">
+    </target>
+</animated-vector>
