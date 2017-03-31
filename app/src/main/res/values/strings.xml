@@ -3,5 +3,9 @@
     <string name="icon_name">AirPodsTool</string>
     <string name="airpods_play_pause">双击 AirPods 播放/暂停</string>
     <string name="airpods_next">双击 AirPods 下一首</string>
-    <string name="reinit_audio_manager">重新初始化</string>
+    <string name="media_prev">上一首</string>
+    <string name="media_next">下一首</string>
+    <string name="media_play">播放</string>
+    <string name="media_pause">暂停</string>
+    <string name="re_init_audio_manager">长按重新初始化</string>
 </resources>

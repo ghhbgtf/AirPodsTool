@@ -4,6 +4,8 @@
 
     <application
         android:allowBackup="true"
+        android:enabled="true"
+        android:persistent="true"
         android:icon="@drawable/airpods"
         android:label="@string/app_name"
         android:supportsRtl="true"

@@ -10,6 +10,7 @@ import static android.view.KeyEvent.ACTION_UP;
 import static android.view.KeyEvent.KEYCODE_MEDIA_NEXT;
 import static android.view.KeyEvent.KEYCODE_MEDIA_PAUSE;
 import static android.view.KeyEvent.KEYCODE_MEDIA_PLAY;
+import static android.view.KeyEvent.keyCodeToString;
 
 public class MediaReceiver extends BroadcastReceiver {
     private static final String TAG = "MediaReceiver";
@@ -32,7 +33,7 @@ public class MediaReceiver extends BroadcastReceiver {
         KeyEvent keyEvent
                 = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
         int keyCode = keyEvent.getKeyCode();
-        Log.d(TAG, "onReceive: " + keyEvent.keyCodeToString(keyCode) + " proxy: " + proxy);
+        Log.d(TAG, "onReceive: " + keyCodeToString(keyCode) + " proxy: " + proxy);
         if (keyEvent.getAction() == ACTION_UP) {
             // 播放和暂停-->下一首
             if (proxy && (keyCode == KEYCODE_MEDIA_PLAY

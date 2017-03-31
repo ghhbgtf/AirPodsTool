@@ -4,7 +4,11 @@ import android.animation.AnimatorInflater;
 import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
@@ -13,13 +17,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.CompoundButton;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.atlas.AirPodsTool.MyView.CircleProgress;
 import com.atlas.AirPodsTool.MyView.StyleToast;
@@ -29,29 +33,30 @@ import static android.view.KeyEvent.KEYCODE_MEDIA_PAUSE;
 import static android.view.KeyEvent.KEYCODE_MEDIA_PLAY;
 import static android.view.KeyEvent.KEYCODE_MEDIA_PREVIOUS;
 
-public class MainActivity extends Activity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class MainActivity extends Activity implements View.OnClickListener, View.OnLongClickListener {
 
     private static final String TAG = "MainActivity";
 
     public static final int ENGROSS_AUDIO = 0x123;
     public static final int UN_ENGROSS_AUDIO = 0x124;
+    public static final int REFRESH_BUTTON_AIRPODS = 0x125;
 
     private View root;
-
     private PopupWindow popupWindow;
     private CircleProgress circleProgress;
     private TextView tv_message;
-
     private StyleToast styleToast;
+    private ImageButton mBtnPlayPause;
+    private Button mBtnAirPods;
 
     private AudioManager mAudioManager;
     private ComponentName mComponent;
     private AudioControl mAudioControl;
     private Handler mHandler = new AirPodHandler();
+    private PlayPauseReceiver mReceiver = new PlayPauseReceiver();
 
-    private boolean play_pause = true;
+    private boolean isPlaying = false;
     private boolean released = false;
-    private ImageButton mBtnPlayPause;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +65,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
 
         initViews();
         initAudio();
+
+        registerReceiver(mReceiver, new IntentFilter(Intent.ACTION_MEDIA_BUTTON));
     }
 
     private void initViews() {
+        mBtnAirPods = (Button) findViewById(R.id.btn_airpods);
+        mBtnAirPods.setOnClickListener(this);
+        mBtnAirPods.setOnLongClickListener(this);
+        showInfo(R.string.re_init_audio_manager, 3000);
 
         ImageButton btnPrev = (ImageButton) findViewById(R.id.btn_previous);
         btnPrev.setOnClickListener(this);
@@ -81,8 +92,6 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
             ((Animatable) drawableNext).start();
         }
 
-        findViewById(R.id.btn_re_engross_audio).setOnClickListener(this);
-
         styleToast = new StyleToast(this);
 
         root = findViewById(R.id.root);
@@ -99,17 +108,15 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
         colorAnim.setEvaluator(new ArgbEvaluator());
         colorAnim.setTarget(tv_message);
         colorAnim.start();
-
-        ToggleButton toggleAirPods = (ToggleButton) findViewById(R.id.togglebutton_airpods);
-        toggleAirPods.setChecked(MediaReceiver.proxy);
-        toggleAirPods.setOnCheckedChangeListener(this);
-
     }
 
     private void initAudio() {
         mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         mComponent = new ComponentName(this, MediaReceiver.class);
         mAudioControl = new AudioControl(this);
+        isPlaying = mAudioManager.isMusicActive();
+        mBtnPlayPause.setImageResource(isPlaying ? R.drawable.ic_pause_white_24dp
+                : R.drawable.ic_play_arrow_white_24dp);
     }
 
     @Override
@@ -119,6 +126,48 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
             releaseEngross();
             released = true;
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        Log.d(TAG, "onClick: " + v.getTag());
+        int code;
+        switch (v.getId()) {
+            case R.id.btn_airpods:
+                MediaReceiver.proxy = !MediaReceiver.proxy;
+                mHandler.sendEmptyMessage(REFRESH_BUTTON_AIRPODS);
+                return;
+            //音乐控制
+            case R.id.btn_previous:
+                code = KEYCODE_MEDIA_PREVIOUS;
+                break;
+            case R.id.btn_play_pause:
+                code = isPlaying ? KEYCODE_MEDIA_PAUSE
+                        : KEYCODE_MEDIA_PLAY;
+                mBtnPlayPause.setImageResource(
+                        isPlaying ? R.drawable.ic_pause_white_24dp
+                                : R.drawable.ic_play_arrow_white_24dp);
+                isPlaying = !isPlaying;
+                break;
+            case R.id.btn_next:
+                code = KEYCODE_MEDIA_NEXT;
+                break;
+            default:
+                return;
+        }
+        mAudioControl.mediaControl(code);
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        releaseEngross();
+        return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mReceiver);
     }
 
     /**
@@ -131,43 +180,13 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
         mHandler.sendMessageDelayed(Message.obtain(mHandler, UN_ENGROSS_AUDIO), 1300);
     }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        switch (buttonView.getId()) {
-            case R.id.togglebutton_airpods:
-                MediaReceiver.proxy = isChecked;
-                break;
-        }
-        onClick(buttonView);
+    private void showInfo(int resid) {
+        showInfo(resid, 1500);
     }
 
-    @Override
-    public void onClick(View v) {
-        Log.d(TAG, "onClick: " + v.getId());
-        int code;
-        switch (v.getId()) {
-            case R.id.btn_re_engross_audio:
-                releaseEngross();
-                return;
-            //音乐控制
-            case R.id.btn_previous:
-                code = KEYCODE_MEDIA_PREVIOUS;
-                break;
-            case R.id.btn_play_pause:
-                code = play_pause ?
-                        KEYCODE_MEDIA_PLAY : KEYCODE_MEDIA_PAUSE;
-                mBtnPlayPause.setImageResource(
-                        play_pause ? R.drawable.ic_pause_white_24dp
-                                : R.drawable.ic_play_arrow_white_24dp);
-                play_pause = !play_pause;
-                break;
-            case R.id.btn_next:
-                code = KEYCODE_MEDIA_NEXT;
-                break;
-            default:
-                return;
-        }
-        mAudioControl.mediaControl(code);
+    private void showInfo(final int resid, final long delayMillis) {
+        mBtnAirPods.setText(resid);
+        mHandler.sendMessageDelayed(Message.obtain(mHandler, REFRESH_BUTTON_AIRPODS), delayMillis);
     }
 
     private void showPopWindow(String title) {
@@ -180,6 +199,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
     }
 
     private class AirPodHandler extends Handler {
+
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
@@ -187,6 +207,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
                     Log.d(TAG, "handleMessage: " + "ENGROSS_AUDIO");
                     // FIXME: 2017/3/30 Deprecated
                     mAudioManager.registerMediaButtonEventReceiver(mComponent);
+                    root.setVisibility(View.INVISIBLE);
                     showPopWindow("正在初始化...");
                     break;
                 case UN_ENGROSS_AUDIO:
@@ -195,8 +216,43 @@ public class MainActivity extends Activity implements View.OnClickListener, Comp
                     mAudioManager.registerMediaButtonEventReceiver(mComponent);
                     if (popupWindow != null && popupWindow.isShowing()) {
                         popupWindow.dismiss();
+                        root.setVisibility(View.VISIBLE);
                     }
                     styleToast.showToast("初始化成功");
+                    break;
+                case REFRESH_BUTTON_AIRPODS:
+                    mBtnAirPods.setText(MediaReceiver.proxy ? R.string.airpods_next
+                            : R.string.airpods_play_pause);
+                    break;
+            }
+        }
+    }
+
+    private class PlayPauseReceiver extends BroadcastReceiver {
+        private static final String TAG = "PlayPauseReceiver";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            KeyEvent keyEvent
+                    = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
+            int keyCode = keyEvent.getKeyCode();
+            Log.d(TAG, "onReceive: " + keyEvent.keyCodeToString(keyCode));
+            switch (keyCode) {
+                case KEYCODE_MEDIA_PAUSE:
+                    mBtnPlayPause.setImageResource(R.drawable.ic_play_arrow_white_24dp);
+                    isPlaying = false;
+                    showInfo(R.string.media_pause);
+                    break;
+                case KEYCODE_MEDIA_PLAY:
+                    mBtnPlayPause.setImageResource(R.drawable.ic_pause_white_24dp);
+                    isPlaying = true;
+                    showInfo(R.string.media_play);
+                    break;
+                case KEYCODE_MEDIA_NEXT:
+                    showInfo(R.string.media_next);
+                    break;
+                case KEYCODE_MEDIA_PREVIOUS:
+                    showInfo(R.string.media_prev);
                     break;
             }
         }

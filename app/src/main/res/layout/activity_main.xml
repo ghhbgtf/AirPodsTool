@@ -9,26 +9,17 @@
     android:orientation="vertical">
 
     <com.atlas.AirPodsTool.MyView.ShadowButton
-        android:id="@+id/btn_re_engross_audio"
-        style="@style/myButton"
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:text="@string/reinit_audio_manager"
-        android:textColor="#fff"
-        app:delaytime="80"/>
-
-    <ToggleButton
-        android:id="@+id/togglebutton_airpods"
+        android:id="@+id/btn_airpods"
         style="@style/myButton"
         android:layout_width="match_parent"
         android:checked="true"
+        android:tag="btn_airpods"
         android:textColor="#fff"
-        android:textOff="@string/airpods_play_pause"
         android:textOn="@string/airpods_next"/>
 
     <View
         android:id="@+id/horizontal_bone"
-        android:layout_width="250dp"
+        android:layout_width="220dp"
         android:layout_height="20dp"
         android:focusable="true"
         android:focusableInTouchMode="true">
@@ -38,7 +29,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
@@ -46,6 +37,7 @@
             android:id="@+id/btn_previous"
             style="@style/myButton"
             android:padding="4dp"
+            android:tag="btn_previous"
             app:srcCompat="@drawable/animator_vector_rewind"/>
 
         <android.support.v7.widget.AppCompatImageButton
@@ -53,12 +45,14 @@
             style="@style/myButton"
             android:checked="true"
             android:padding="4dp"
+            android:tag="btn_play_pause"
             app:srcCompat="@drawable/ic_play_arrow_white_24dp"/>
 
         <android.support.v7.widget.AppCompatImageButton
             android:id="@+id/btn_next"
             style="@style/myButton"
             android:padding="4dp"
+            android:tag="btn_next"
             app:srcCompat="@drawable/animator_vector_forward"/>
     </LinearLayout>
 

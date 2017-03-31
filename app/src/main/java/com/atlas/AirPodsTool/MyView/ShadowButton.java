@@ -59,7 +59,7 @@ public class ShadowButton extends Button {
             if (mViewWidth > 0) {
                 mPaint = getPaint();
                 linearGradient = new LinearGradient(0, 0, mViewWidth, 0,
-                        new int[]{0xff000000, 0xffffffff, 0xff000000}, null, Shader.TileMode.MIRROR);
+                        new int[]{0xffffffff, 0xff000000, 0xffffffff}, null, Shader.TileMode.MIRROR);
                 mPaint.setShader(linearGradient);
                 mMatrix = new Matrix();
             }
