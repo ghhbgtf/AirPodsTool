@@ -40,6 +40,7 @@ public class MainActivity extends Activity implements View.OnClickListener, View
     public static final int ENGROSS_AUDIO = 0x123;
     public static final int UN_ENGROSS_AUDIO = 0x124;
     public static final int REFRESH_BUTTON_AIRPODS = 0x125;
+    public static final int REFRESH_BUTTON_PLAY_PAUSE = 0x126;
 
     private View root;
     private PopupWindow popupWindow;
@@ -55,7 +56,6 @@ public class MainActivity extends Activity implements View.OnClickListener, View
     private Handler mHandler = new AirPodHandler();
     private PlayPauseReceiver mReceiver = new PlayPauseReceiver();
 
-    private boolean isPlaying = false;
     private boolean released = false;
 
     @Override
@@ -114,9 +114,8 @@ public class MainActivity extends Activity implements View.OnClickListener, View
         mAudioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         mComponent = new ComponentName(this, MediaReceiver.class);
         mAudioControl = new AudioControl(this);
-        isPlaying = mAudioManager.isMusicActive();
-        mBtnPlayPause.setImageResource(isPlaying ? R.drawable.ic_pause_white_24dp
-                : R.drawable.ic_play_arrow_white_24dp);
+        mHandler.sendMessage(Message.obtain(mHandler,
+                REFRESH_BUTTON_PLAY_PAUSE, mAudioManager.isMusicActive()));
     }
 
     @Override
@@ -142,12 +141,12 @@ public class MainActivity extends Activity implements View.OnClickListener, View
                 code = KEYCODE_MEDIA_PREVIOUS;
                 break;
             case R.id.btn_play_pause:
-                code = isPlaying ? KEYCODE_MEDIA_PAUSE
+                boolean musicActive = mAudioManager.isMusicActive();
+                code = musicActive
+                        ? KEYCODE_MEDIA_PAUSE
                         : KEYCODE_MEDIA_PLAY;
-                mBtnPlayPause.setImageResource(
-                        isPlaying ? R.drawable.ic_pause_white_24dp
-                                : R.drawable.ic_play_arrow_white_24dp);
-                isPlaying = !isPlaying;
+                mHandler.sendMessage(Message.obtain(mHandler,
+                        REFRESH_BUTTON_PLAY_PAUSE, musicActive));
                 break;
             case R.id.btn_next:
                 code = KEYCODE_MEDIA_NEXT;
@@ -224,6 +223,17 @@ public class MainActivity extends Activity implements View.OnClickListener, View
                     mBtnAirPods.setText(MediaReceiver.proxy ? R.string.airpods_next
                             : R.string.airpods_play_pause);
                     break;
+                case REFRESH_BUTTON_PLAY_PAUSE:
+                    boolean musicActive;
+                    if (msg.obj != null) {
+                        musicActive = (boolean) msg.obj;
+                    } else {
+                        musicActive = mAudioManager.isMusicActive();
+                    }
+                    mBtnPlayPause.setImageResource(musicActive
+                            ? R.drawable.ic_pause_white_24dp
+                            : R.drawable.ic_play_arrow_white_24dp);
+                    break;
             }
         }
     }
@@ -239,19 +249,23 @@ public class MainActivity extends Activity implements View.OnClickListener, View
             Log.d(TAG, "onReceive: " + keyEvent.keyCodeToString(keyCode));
             switch (keyCode) {
                 case KEYCODE_MEDIA_PAUSE:
-                    mBtnPlayPause.setImageResource(R.drawable.ic_play_arrow_white_24dp);
-                    isPlaying = false;
+                    mHandler.sendMessage(Message.obtain(mHandler,
+                            REFRESH_BUTTON_PLAY_PAUSE, false/*pausing*/));
                     showInfo(R.string.media_pause);
                     break;
                 case KEYCODE_MEDIA_PLAY:
-                    mBtnPlayPause.setImageResource(R.drawable.ic_pause_white_24dp);
-                    isPlaying = true;
+                    mHandler.sendMessage(Message.obtain(mHandler,
+                            REFRESH_BUTTON_PLAY_PAUSE, true/*playing*/));
                     showInfo(R.string.media_play);
                     break;
                 case KEYCODE_MEDIA_NEXT:
+                    mHandler.sendMessageDelayed(Message.obtain(mHandler,
+                            REFRESH_BUTTON_PLAY_PAUSE), 1000);
                     showInfo(R.string.media_next);
                     break;
                 case KEYCODE_MEDIA_PREVIOUS:
+                    mHandler.sendMessageDelayed(Message.obtain(mHandler,
+                            REFRESH_BUTTON_PLAY_PAUSE), 1000);
                     showInfo(R.string.media_prev);
                     break;
             }
