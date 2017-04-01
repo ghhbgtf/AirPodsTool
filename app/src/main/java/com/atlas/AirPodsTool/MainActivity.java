@@ -272,4 +272,8 @@ public class MainActivity extends Activity implements View.OnClickListener, View
         }
     }
 
+    public void close(View view) {
+        finish();
+    }
+
 }

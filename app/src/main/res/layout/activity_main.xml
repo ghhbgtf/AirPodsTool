@@ -8,14 +8,28 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.atlas.AirPodsTool.MyView.ShadowButton
-        android:id="@+id/btn_airpods"
-        style="@style/myButton"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:checked="true"
-        android:tag="btn_airpods"
-        android:textColor="#fff"
-        android:textOn="@string/airpods_next"/>
+        android:layout_height="wrap_content">
+
+        <com.atlas.AirPodsTool.MyView.ShadowButton
+            android:id="@+id/btn_airpods"
+            style="@style/myButton"
+            android:layout_width="match_parent"
+            android:checked="true"
+            android:tag="btn_airpods"
+            android:textColor="#fff"
+            android:textOn="@string/airpods_next"/>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/corner_button_close"
+            android:onClick="close"
+            android:src="@drawable/ic_close_black_24dp"/>
+
+    </RelativeLayout>
 
     <View
         android:id="@+id/horizontal_bone"
