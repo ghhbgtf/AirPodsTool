@@ -31,15 +31,15 @@
 
     </RelativeLayout>
 
-    <View
-        android:id="@+id/horizontal_bone"
+    <SeekBar
+        android:id="@+id/seek_bar_volume"
         android:layout_width="220dp"
-        android:layout_height="20dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
-
-        <requestFocus/>
-    </View>
+        android:layout_height="15dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginStart="5dp"
+        android:progressDrawable="@drawable/seekbar_bg"
+        android:thumb="@drawable/seekbar_thumb"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"

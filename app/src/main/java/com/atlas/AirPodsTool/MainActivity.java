@@ -23,11 +23,13 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.atlas.AirPodsTool.MyView.CircleProgress;
 import com.atlas.AirPodsTool.MyView.StyleToast;
 
+import static android.media.AudioManager.STREAM_MUSIC;
 import static android.view.KeyEvent.KEYCODE_MEDIA_NEXT;
 import static android.view.KeyEvent.KEYCODE_MEDIA_PAUSE;
 import static android.view.KeyEvent.KEYCODE_MEDIA_PLAY;
@@ -69,7 +71,10 @@ public class MainActivity extends Activity implements View.OnClickListener, View
         registerReceiver(mReceiver, new IntentFilter(Intent.ACTION_MEDIA_BUTTON));
     }
 
+    private SeekBar mSeekBar;
+
     private void initViews() {
+        mSeekBar = (SeekBar) findViewById(R.id.seek_bar_volume);
         mBtnAirPods = (Button) findViewById(R.id.btn_airpods);
         mBtnAirPods.setOnClickListener(this);
         mBtnAirPods.setOnLongClickListener(this);
@@ -116,6 +121,33 @@ public class MainActivity extends Activity implements View.OnClickListener, View
         mAudioControl = new AudioControl(this);
         mHandler.sendMessage(Message.obtain(mHandler,
                 REFRESH_BUTTON_PLAY_PAUSE, mAudioManager.isMusicActive()));
+        initSeekBar();
+    }
+
+    private void initSeekBar() {
+        mSeekBar.setMax(mAudioManager.getStreamMaxVolume(STREAM_MUSIC));
+        mSeekBar.setProgress(mAudioManager.getStreamVolume(STREAM_MUSIC));
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                Log.d(TAG, "onProgressChanged: " + progress);
+                mAudioManager.setStreamVolume(STREAM_MUSIC, progress, 0);
+                mBtnAirPods.setText(String.format(
+                        getString(R.string.adjust_volume), progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                mHandler.sendMessageDelayed(Message.obtain(mHandler,
+                        REFRESH_BUTTON_AIRPODS), 1500);
+
+            }
+        });
     }
 
     @Override
@@ -183,9 +215,10 @@ public class MainActivity extends Activity implements View.OnClickListener, View
         showInfo(resid, 1500);
     }
 
-    private void showInfo(final int resid, final long delayMillis) {
+    private void showInfo(int resid, long delayMillis) {
         mBtnAirPods.setText(resid);
-        mHandler.sendMessageDelayed(Message.obtain(mHandler, REFRESH_BUTTON_AIRPODS), delayMillis);
+        mHandler.sendMessageDelayed(Message.obtain(mHandler,
+                REFRESH_BUTTON_AIRPODS), delayMillis);
     }
 
     private void showPopWindow(String title) {
