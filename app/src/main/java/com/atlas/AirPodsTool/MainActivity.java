@@ -155,7 +155,6 @@ public class MainActivity extends Activity implements View.OnClickListener, View
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus && !released) {
             releaseEngross();
-            released = true;
         }
     }
 
@@ -251,6 +250,7 @@ public class MainActivity extends Activity implements View.OnClickListener, View
                         root.setVisibility(View.VISIBLE);
                     }
                     styleToast.showToast("初始化成功");
+                    released = true;
                     break;
                 case REFRESH_BUTTON_AIRPODS:
                     mBtnAirPods.setText(MediaReceiver.proxy ? R.string.airpods_next
