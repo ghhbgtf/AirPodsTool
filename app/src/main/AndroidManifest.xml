@@ -13,6 +13,7 @@
 
         <activity
             android:name="com.atlas.AirPodsTool.MainActivity"
+            android:excludeFromRecents="true"
             android:label="@string/icon_name"
             android:theme="@style/dialog">
             <intent-filter>
