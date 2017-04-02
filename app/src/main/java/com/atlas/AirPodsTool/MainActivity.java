@@ -56,7 +56,8 @@ public class MainActivity extends Activity implements View.OnClickListener, View
     private ComponentName mComponent;
     private AudioControl mAudioControl;
     private Handler mHandler = new AirPodHandler();
-    private PlayPauseReceiver mReceiver = new PlayPauseReceiver();
+    private PlayPauseReceiver mPlayPauseReceiver = new PlayPauseReceiver();
+    private VolumeReceiver mVolumeReceiver = new VolumeReceiver();
 
     private boolean released = false;
 
@@ -68,7 +69,8 @@ public class MainActivity extends Activity implements View.OnClickListener, View
         initViews();
         initAudio();
 
-        registerReceiver(mReceiver, new IntentFilter(Intent.ACTION_MEDIA_BUTTON));
+        registerReceiver(mPlayPauseReceiver, new IntentFilter(Intent.ACTION_MEDIA_BUTTON));
+        registerReceiver(mVolumeReceiver, new IntentFilter("android.media.VOLUME_CHANGED_ACTION"));
     }
 
     private SeekBar mSeekBar;
@@ -197,7 +199,8 @@ public class MainActivity extends Activity implements View.OnClickListener, View
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mReceiver);
+        unregisterReceiver(mPlayPauseReceiver);
+        unregisterReceiver(mVolumeReceiver);
     }
 
     /**
@@ -302,6 +305,14 @@ public class MainActivity extends Activity implements View.OnClickListener, View
                     showInfo(R.string.media_prev);
                     break;
             }
+        }
+    }
+
+    private class VolumeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            int currVolume = mAudioManager.getStreamVolume(STREAM_MUSIC);
+            mSeekBar.setProgress(currVolume);
         }
     }
 
